@@ -41,7 +41,7 @@ async function renderObject(scene, mainObject) {
             const textGeometry = new TextGeometry(mainText, {
                 font: font,
                 size: 10,
-                height: 1,
+                height: 1.5,
             });
 
             console.log(textGeometry);
@@ -52,7 +52,7 @@ async function renderObject(scene, mainObject) {
 
             let textMesh = new THREE.Mesh(textGeometry);
 
-            textMesh.position.set(0, 1, 0);
+            textMesh.position.set(0, 0, 0);
 
             textMesh.geometry.computeBoundingBox();
 
@@ -69,7 +69,7 @@ async function renderObject(scene, mainObject) {
             let offset = (width - textSize) / 2;
 
             //textMesh.position.set(-4, 4, 1);
-            textMesh.position.set(0, 4, 2.5);
+            textMesh.position.set(0, 4, 2.0);
             //textMesh.position.set(-10, 4, 2.5);
 
             centerX(textMesh, mesh);

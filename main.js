@@ -216,6 +216,8 @@ document.getElementById('export').addEventListener('click', function () {
     // Instantiate an exporter
     let mesh = scene.getObjectByName("mainObject");
 
+    mesh = new THREE.Mesh(mesh.geometry, mesh.material);
+
     const exporter = new STLExporter();
 
     // Configure export options
@@ -245,6 +247,7 @@ document.getElementById('exportPrep').addEventListener('click', function () {
 
     mesh.geometry.computeBoundingBox();
     mesh.updateMatrix();
+    updateMatrixWorld();
 
     mesh = scene.getObjectByName("mainObject");
 });
