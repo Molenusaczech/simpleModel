@@ -18,9 +18,9 @@ async function renderObject(scene, mainObject) {
 
     const material = new THREE.MeshPhongMaterial({ color: 0xd5d5d5, specular: 0x494949, shininess: 200 });
 
-    loader.load('./models/kost.stl', function (geometry) {
+    loader.load("/models/kost.stl", function (geometry) {
 
-        fontloader.load('fonts/Roboto_black.json', function (font) {
+        fontloader.load("/fonts/Roboto_black.json", function (font) {
 
             let mesh = new THREE.Mesh(geometry, material);
 
