@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
     <style>
-        * { margin: 0; padding: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
+
 <body>
 
     <div id="options">
@@ -21,7 +26,14 @@
 
         </div>
 
-        test
+        <br>
+        <button id="cameraMode">Camera Mode</button>
+        <button id="translateMode">Move Mode</button>
+        <button id="rotateMode">Rotate Mode</button>
+        <button id="scaleMode">Scale Mode</button>
+
+        <br>
+
         <button id="rerender">Rerender</button>
 
         <h1>Export</h1>
@@ -33,12 +45,44 @@
 
         <button id="exportPrep">Prepare Export</button>
         <button id="export">Export</button>
+
+        <br>
+
+        Models:
+        <div id="modelList"></div>
+
+        <br>
+        Position:
+        <div id="position">
+            <input type="number" value="0" id="posx">
+            <input type="number" value="0" id="posy">
+            <input type="number" value="0" id="posz">
+        </div>
+
+        <br>
+        Rotation:
+        <div id="rotation">
+            <input type="number" value="0" id="rotx">
+            <input type="number" value="0" id="roty">
+            <input type="number" value="0" id="rotz">
+        </div>
+
+        <br>
+        Scale:
+        <div id="scale">
+            <input type="number" value="1" id="scalex">
+            <input type="number" value="1" id="scaley">
+            <input type="number" value="1" id="scalez">
+        </div>
+        
     </div>
 
+    
     <div id="main">
-        
+
     </div>
 
     <script src="main.js" type="module"></script>
 </body>
+
 </html>

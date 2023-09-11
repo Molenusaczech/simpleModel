@@ -7,7 +7,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 import { centerX } from '/lib/center.js';
 
-async function renderObject(scene, mainObject) {
+async function renderObject(scene, mainObject, renderer, camera) {
 
     //const mainText = args.mainText;
     const mainText = document.getElementById('mainText').value;

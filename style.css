@@ -8,3 +8,11 @@
     z-index: 999;
     overflow: hidden;
 }
+
+.explorerModel {
+    background-color: #eee;
+}
+
+.explorerModelSelected {
+    background-color: #ccc;
+}

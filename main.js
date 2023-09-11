@@ -13,6 +13,8 @@ import { saveString } from '/lib/save.js';
 
 import { round } from '/lib/round.js';
 
+import { createOrbitControls, initControls, setMovable, updateControls } from './lib/controlsHandle';
+
 let container, stats;
 const scripts = getScripts();
 
@@ -36,7 +38,7 @@ function init() {
 
     document.getElementById('main').appendChild(container);
 
-    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 15);
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 150);
     camera.position.set(3, 0.15, 3);
 
     cameraTarget = new THREE.Vector3(0, - 0.25, 0);
@@ -125,10 +127,19 @@ function init() {
 
     //controls
 
-    const controls = new OrbitControls(camera, renderer.domElement);
+    //const controls = new OrbitControls(camera, renderer.domElement);
+
+    //createOrbitControls(camera, renderer.domElement);
+
+
+    initControls(camera, renderer);
+    createOrbitControls(camera, renderer.domElement);
+
+    console.log(mainObject);
+    //setMovable(camera, renderer.domElement, mainObject, scene);
 
     //controls.update() must be called after any manual changes to the camera's transform
-    controls.update();
+    //controls.update();
 
     window.addEventListener('resize', onWindowResize);
 
@@ -140,7 +151,7 @@ function renderObject() {
 
     if (selectedIndex == -1) return
 
-    scripts[selectedIndex].renderObject(scene, mainObject);
+    scripts[selectedIndex].renderObject(scene, mainObject, renderer, camera);
 
 }
 
@@ -179,6 +190,7 @@ function animate() {
     requestAnimationFrame(animate);
 
     render();
+    updateControls();
     //controls.update();
     stats.update();
 

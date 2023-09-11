@@ -17,14 +17,14 @@ async function renderObject(scene, mainObject, renderer, camera) {
 
     const material = new THREE.MeshPhongMaterial({ color: 0xd5d5d5, specular: 0x494949, shininess: 200 });
 
-    loader.load('/models/toothBlend.stl', function (geometry) {
+    loader.load('/models/tokenHolder.stl', function (geometry) {
 
         fontloader.load('/fonts/Roboto_black.json', function (font) {
 
             let mesh = new THREE.Mesh(geometry, material);
 
             mesh.position.set(0, 0, 0);
-            //mesh.rotation.set(- Math.PI / 2, 0, 0);
+            mesh.rotation.set(Math.PI, 0, Math.PI);
             //mesh.scale.set(0.01, 0.01, 0.01);
 
             mesh.castShadow = true;
@@ -36,7 +36,7 @@ async function renderObject(scene, mainObject, renderer, camera) {
 
             const textGeometry = new TextGeometry(mainText, {
                 font: font,
-                size: 6,
+                size: 4,
                 height: 1.5, // 1.5
             });
 
@@ -55,7 +55,7 @@ async function renderObject(scene, mainObject, renderer, camera) {
             //let textMiddleX = (textMesh.geometry.boundingBox.max.x + textMesh.geometry.boundingBox.min.x) / 2 * 0.01;
 
             //textMesh.position.set(-4, 4, 1);
-            textMesh.position.set(0, 7, 4.9);
+            textMesh.position.set(0, 4, 2);
             //textMesh.position.set(-10, 4, 2.5);
 
             centerX(textMesh, mesh);
@@ -92,7 +92,7 @@ async function renderObject(scene, mainObject, renderer, camera) {
 }
 
 const metadata = {
-    name: 'Toothpaste helper',
+    name: 'Token holder',
     inputs: [
         {
             name: 'mainText',
@@ -101,12 +101,12 @@ const metadata = {
             value: 'Example'
         }
     ],
-    "license": "CC-BY 4.0 https://www.printables.com/cs/model/26897-toothpaste-squeezer",
+    "license": "",
 }
 
-const toothpaste = {
+const tokenHolder = {
     metadata: metadata,
     renderObject: renderObject
 }
 
-export { toothpaste };
+export { tokenHolder };
