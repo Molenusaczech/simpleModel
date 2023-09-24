@@ -7,6 +7,11 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 import { centerX } from '/lib/center.js';
 
+
+import stl from '../models/kost.stl';
+
+import fontJson from '../fonts/Roboto_black.json?url';
+
 async function renderObject(scene, mainObject, renderer, camera) {
 
     //const mainText = args.mainText;
@@ -18,9 +23,9 @@ async function renderObject(scene, mainObject, renderer, camera) {
 
     const material = new THREE.MeshPhongMaterial({ color: 0xd5d5d5, specular: 0x494949, shininess: 200 });
 
-    loader.load("/models/kost.stl", function (geometry) {
+    loader.load(stl, function (geometry) {
 
-        fontloader.load("/fonts/Roboto_black.json", function (font) {
+        fontloader.load(fontJson, function (font) {
 
             let mesh = new THREE.Mesh(geometry, material);
 

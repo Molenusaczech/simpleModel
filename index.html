@@ -17,16 +17,6 @@
 <body>
 
     <div id="options">
-
-        <select id="selectScript">
-            <option value="">Loading...</option>
-        </select>
-        <br>
-        <div id="params">
-
-        </div>
-
-        <br>
         <button id="cameraMode">Camera Mode</button>
         <button id="translateMode">Move Mode</button>
         <button id="rotateMode">Rotate Mode</button>
@@ -34,18 +24,11 @@
 
         <br>
 
-        <button id="rerender">Rerender</button>
-
-        <h1>Export</h1>
-
-        Scale:
-        <input type="number" value="1" id="scale">
-
-        <div id="dimensions"></div>
-
-        <button id="exportPrep">Prepare Export</button>
-        <button id="export">Export</button>
-
+        <select id="selectModel">
+            <option value="">Loading...</option>
+        </select>
+        <button id="addModel">Add</button><br>
+        <button id="addCube">Add Cube</button>
         <br>
 
         Models:
@@ -74,6 +57,21 @@
             <input type="number" value="1" id="scaley">
             <input type="number" value="1" id="scalez">
         </div>
+
+        <div id="properties">
+        
+        </div>
+
+        <br>
+
+        Export
+        Scale:
+        <input type="number" value="1" id="scale">
+
+        <div id="dimensions"></div>
+
+        <button id="exportPrep">Prepare Export</button>
+        <button id="export">Export</button>
         
     </div>
 

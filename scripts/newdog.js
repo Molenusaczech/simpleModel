@@ -13,7 +13,7 @@ import { deleteTransformControls, createOrbitControls, interactionManager } from
 import { centerX } from '../lib/center.js';
 import { CSG } from 'three-csg-ts';
 
-import stl from '../models/toothBlend.stl';
+import stl from '../models/kost.stl';
 import fontJson from '../fonts/Roboto_black.json?url';
 
 const material = new THREE.MeshPhongMaterial({ color: 0xd5d5d5, specular: 0x494949, shininess: 200 });
@@ -27,36 +27,45 @@ const params = [
         name: 'mainText',
         type: 'text',
         value: 'Example'
+    },
+    {
+        displayName: 'Secondary Text',
+        name: 'secondaryText',
+        type: 'text',
+        value: '+420 123 456 789'
     }
 ]
 
-function genModel(geometry, font, mainText) {
+function genModel(geometry, font, mainText, secondaryText) {
     let mesh = new THREE.Mesh(geometry, material);
 
-    mesh.position.set(0, 0, 0);
-    //mesh.rotation.set(- Math.PI / 2, 0, 0);
-    //mesh.scale.set(0.01, 0.01, 0.01);
+    mesh.geometry.computeBoundingBox();
 
-    mesh.castShadow = true;
+    console.log(mesh.geometry.boundingBox);
+
+    let size = new THREE.Vector3(mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x, mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y, mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z);
+    console.log(size);
+
+    mesh.castShadow = false;
     mesh.receiveShadow = true;
 
-    mesh.updateMatrix();
-    mesh.geometry.computeBoundingBox();
+    //scene.add(mesh);
+
     // text1
 
     const textGeometry = new TextGeometry(mainText, {
         font: font,
-        size: 6,
-        height: 1.5, // 1.5
+        size: 10,
+        height: 1.5,
     });
 
     console.log(textGeometry);
 
+    mesh.position.set(0, 0, 0);
 
 
-    let textMesh = new THREE.Mesh(textGeometry, material);
 
-    textMesh.updateMatrix();
+    let textMesh = new THREE.Mesh(textGeometry);
 
     textMesh.position.set(0, 0, 0);
 
@@ -64,36 +73,87 @@ function genModel(geometry, font, mainText) {
 
     //let textMiddleX = (textMesh.geometry.boundingBox.max.x + textMesh.geometry.boundingBox.min.x) / 2 * 0.01;
 
+    let textMinX = -10;
+    let textMaxX = 60;
+
+    let width = textMaxX - textMinX;
+
+    let textSize = textMesh.geometry.boundingBox.max.x - textMesh.geometry.boundingBox.min.x;
+    console.log(textSize);
+
+    let offset = (width - textSize) / 2;
+
     //textMesh.position.set(-4, 4, 1);
-    textMesh.position.set(0, 7, 4.9);
+    textMesh.position.set(0, 4, 2.0);
     //textMesh.position.set(-10, 4, 2.5);
 
     centerX(textMesh, mesh);
 
-    console.log(textMesh.geometry.boundingBox);
-    console.log(mesh.geometry.boundingBox);
+    console.log(textMesh);
+    //scene.add(textMesh);
+
+
+    //scene.add(testCube);
+
+    //console.log(mesh.geometry);
+
+    //geometry.computeVertexNormals();
+
+    //mesh = new THREE.Mesh(geometry, material);
+    //console.log(mesh);
 
 
     mesh.updateMatrix();
     textMesh.updateMatrix();
 
-    console.log(mesh);
-    console.log(textMesh);
-
-    //scene.add(textMesh);
-    //scene.add(mesh);
-
     // Perform CSG operations
     // The result is a THREE.Mesh that you can add to your scene...
     let subRes = CSG.union(mesh, textMesh);
 
-    subRes.updateMatrix();
+    //  text subtract
+
+
+    const textGeometry2 = new TextGeometry(secondaryText, {
+        font: font,
+        size: 5,
+        height: 1,
+    });
+
+    mesh.position.set(0, 0, 0);
+
+
+
+    let textSubtractMesh = new THREE.Mesh(textGeometry2);
+
+    textSubtractMesh.geometry.computeBoundingBox();
+
+    textSubtractMesh.position.set(0, 5, 1);
+
+    centerX(textSubtractMesh, mesh, true);
+
+
+    textSubtractMesh.rotation.set(0, Math.PI, 0);
+
+    textSubtractMesh.updateMatrix();
+
+    //scene.add(textSubtractMesh);
+
+    subRes = CSG.subtract(subRes, textSubtractMesh);
+
+
     subRes.scale.set(0.01, 0.01, 0.01);
 
     return subRes;
 }
 
 function create() {
+    /*const cylinder = new THREE.Mesh(stl, material);
+    let newParams = JSON.parse(JSON.stringify(params));
+    scene.add(cylinder);
+    console.log(params);
+    addModel('CylinderTest', cylinder, cylinder.uuid, "basic_cylinder", newParams);
+    setMovable(cylinder);*/
+
     let newParams = JSON.parse(JSON.stringify(params));
 
     stlLoader.load(stl, function (geometry) {
@@ -101,7 +161,7 @@ function create() {
         fontLoader.load(fontJson, function (font) {
 
 
-            let subRes = genModel(geometry, font, "Example");
+            let subRes = genModel(geometry, font, "Example", "+420 123 456 789");
 
             console.log(subRes.uuid);
 
@@ -111,7 +171,7 @@ function create() {
 
             //mainObject = subRes.uuid;
 
-            addModel('Toothpaste', subRes, subRes.uuid, "mole_toothpaste", newParams);
+            addModel('DogStamp', subRes, subRes.uuid, "mole_dogstamp", newParams);
             setMovable(subRes);
 
         });
@@ -121,6 +181,7 @@ function create() {
 function update(model) {
 
     let mainText = document.getElementById("mainText").value;
+    let secondaryText = document.getElementById("secondaryText").value;
 
     let old = model.mesh;
     let setting = model.settings;
@@ -141,7 +202,7 @@ function update(model) {
         fontLoader.load(fontJson, function (font) {
 
 
-            let subRes = genModel(geometry, font, mainText);
+            let subRes = genModel(geometry, font, mainText, secondaryText);
 
             subRes.position.set(position.x, position.y, position.z);
             subRes.rotation.set(rotation.x, rotation.y, rotation.z);
@@ -163,14 +224,28 @@ function update(model) {
 
         });
     });
+
+    /*cylinder.position.set(position.x, position.y, position.z);
+    cylinder.rotation.set(rotation.x, rotation.y, rotation.z);
+    cylinder.scale.set(scale.x, scale.y, scale.z);
+    //cylinder.uuid = uuid; 
+    scene.add(cylinder);*/
+
+    //addModel('CylinderTest', cylinder, cylinder.uuid, "basic_cylinder", params);
+    /*changeMesh(uuid, cylinder);
+    setMovable(cylinder);
+    deleteTransformControls();
+
+    focusObject(cylinder);*/
+
 }
 
-const toothpaste = {
-    name: 'Toothpaste squeezer',
-    type: 'mole_toothpaste',
+const dog = {
+    name: 'Dog Stamp',
+    type: 'mole_dogstamp',
     params: params,
     create: create,
     update: update,
 }
 
-export { toothpaste };
+export { dog };

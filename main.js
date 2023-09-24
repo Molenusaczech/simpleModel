@@ -15,21 +15,23 @@ import { round } from '/lib/round.js';
 
 import { createOrbitControls, initControls, setMovable, updateControls } from './lib/controlsHandle';
 
+import { initModelAdd } from './lib/manualAddModel';
+
+import { initGlobals } from './lib/globalVars';
+
+import { initExplorer } from './lib/explorer';
+import { positionInit } from './lib/position';
+
 let container, stats;
 const scripts = getScripts();
 
 let camera, cameraTarget, scene, renderer, mainObject;
 
 
-renderOptions();
-renderParams();
+//renderOptions();
+//renderParams();
 init();
 animate();
-
-document.getElementById('selectScript').addEventListener('change', function () {
-    renderParams();
-    rerender();
-});
 
 function init() {
 
@@ -101,8 +103,10 @@ function init() {
 
     // Binary files
 
-    renderObject();
+    //renderObject();
 
+    initExplorer(scene, mainObject, renderer, camera);
+    positionInit();
 
     // Lights
 
@@ -119,6 +123,9 @@ function init() {
     renderer.shadowMap.enabled = true;
 
     container.appendChild(renderer.domElement);
+
+    initGlobals(camera, scene, renderer);
+
 
     // stats
 
@@ -142,6 +149,9 @@ function init() {
     //controls.update();
 
     window.addEventListener('resize', onWindowResize);
+
+    initModelAdd();
+    
 
 }
 
@@ -219,11 +229,6 @@ function rerender() {
     scene.remove(object);
     renderObject();
 }
-
-document.getElementById('rerender').addEventListener('click', function () {
-    rerender();
-});
-
 document.getElementById('export').addEventListener('click', function () {
     // Instantiate an exporter
     let mesh = scene.getObjectByName("mainObject");
@@ -263,3 +268,5 @@ document.getElementById('exportPrep').addEventListener('click', function () {
 
     mesh = scene.getObjectByName("mainObject");
 });
+
+//export { scene, camera, renderer };
